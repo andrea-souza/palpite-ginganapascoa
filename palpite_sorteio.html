@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Palpite do Sorteio</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 400px;
+      margin: 40px auto;
+      text-align: center;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      width: 100%;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Deixe seu Palpite</h1>
+  <form id="palpiteForm">
+    <input type="text" id="nome" placeholder="Seu nome" required />
+    <input type="text" id="palpite" placeholder="Seu palpite" required />
+    <button type="submit">Enviar</button>
+  </form>
+  <p id="mensagem"></p>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxY00QVpCMMyg4A4PK4kEPhCIASiIugHURlIh-qn35W9KtOtAdfPXNCAeU7QtOimqslFQ/exec';
+
+    const form = document.getElementById('palpiteForm');
+    const mensagem = document.getElementById('mensagem');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('nome').value;
+      const palpite = document.getElementById('palpite').value;
+      const data = new FormData();
+      data.append('nome', nome);
+      data.append('palpite', palpite);
+
+      fetch(scriptURL, { method: 'POST', body: data })
+        .then(response => {
+          mensagem.innerText = 'Palpite enviado com sucesso!';
+          form.reset();
+        })
+        .catch(error => {
+          console.error('Erro!', error.message);
+          mensagem.innerText = 'Erro ao enviar. Tente novamente.';
+        });
+    });
+  </script>
+</body>
+</html>
